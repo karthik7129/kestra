@@ -33,7 +33,7 @@
                     </nav>
                 </template>
                 <template #top>
-                    <el-row class="my-4 px-3" justify="center">
+                    <el-row class="mb-3 px-3" justify="center">
                         <el-col :xs="24" :sm="18" :md="12" :lg="10" :xl="8">
                             <el-input
                                 v-model="searchText"
