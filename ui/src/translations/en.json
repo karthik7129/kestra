@@ -776,6 +776,8 @@
             "execute_default_tab": "Default Execution Tab",
             "multi_panel_editor": "Multi Panel Editor",
             "flow_default_tab": "Default Flow Tab",
+            "reset_to_defaults": "Restore Default Configuration",
+            "reset": "Reset",
             "playground": "Playground",
             "auto_refresh_interval": "Auto Refresh Interval"
           }
@@ -792,6 +794,8 @@
             "environment_name": "Environment Name",
             "environment_name_tooltip": "This environment name is set from the config but can be changed.",
             "environment_color": "Environment Color",
+            "reset_to_defaults": "Restore Default Preferences",
+            "reset": "Reset",
             "chart_color_scheme": {
               "label": "Chart Color Scheme",
               "classic": "Classic",

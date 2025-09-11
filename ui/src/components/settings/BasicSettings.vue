@@ -100,6 +100,11 @@
                             </template>
                         </el-input-number>
                     </Column>
+                    <Column :label="$t('settings.blocks.configuration.fields.reset_to_defaults')">
+                        <el-button @click="restoreDefaultConfigurations()" type="primary" :disabled="hasDefaultMainConfig">
+                            {{ $t("settings.blocks.configuration.fields.reset") }}
+                        </el-button>
+                    </Column>
                 </Row>
             </template>
         </Block>
@@ -189,6 +194,12 @@
                             @change="onEnvColorChange"
                             showAlpha
                         />
+                    </Column>
+
+                    <Column :label="$t('settings.blocks.theme.fields.reset_to_defaults')">
+                        <el-button @click="restoreDefaultPreferences()" type="primary" :disabled="hasDefaultPreferences">
+                            {{ $t("settings.blocks.theme.fields.reset") }}
+                        </el-button>
                     </Column>
                 </Row>
             </template>
@@ -302,6 +313,29 @@
         data() {
             return {
                 hasUnsavedChanges: false,
+                hasDefaultMainConfig: undefined,
+                hasDefaultPreferences: undefined,
+                defaultMainConfig: {
+                    defaultNamespace: undefined,
+                    defaultLogLevel: "INFO",
+                    logDisplay: logDisplayTypes.DEFAULT,
+                    editorType: "YAML",
+                    executeFlowBehaviour: "same tab",
+                    executeDefaultTab: "gantt",
+                    flowDefaultTab: "overview",
+                    editorPlayground: true,
+                    autoRefreshInterval: 10
+                },
+                defaultPreferences: {
+                    theme: "light",
+                    logsFontSize: 12,
+                    editorFontFamily: "'Source Code Pro', monospace",
+                    editorFontSize: 12,
+                    autofoldTextEditor: false,
+                    hoverTextEditor: false,
+                    envName: undefined,
+                    envColor: undefined
+                },
                 originalSettings: {},
                 pendingSettings: {
                     defaultNamespace: undefined,
@@ -366,10 +400,13 @@
             this.pendingSettings.logsFontSize = parseInt(localStorage.getItem("logsFontSize")) || 12;
             this.pendingSettings.autoRefreshInterval = parseInt(localStorage.getItem(storageKeys.AUTO_REFRESH_INTERVAL)) || 10;
             this.originalSettings = JSON.parse(JSON.stringify(this.pendingSettings));
+
+            this.checkDefaultStates();
         },
         methods: {
             checkForChanges() {
                 this.hasUnsavedChanges = JSON.stringify(this.pendingSettings) !== JSON.stringify(this.originalSettings);
+                this.checkDefaultStates();
             },
             async confirmNavigation() {
                 if (!this.hasUnsavedChanges) return true;
@@ -394,6 +431,44 @@
                     this.hasUnsavedChanges = false;
                     return true;
                 }
+            },
+            isObjectEqual(obj1, obj2, keys) {
+                return keys.every(key => {
+                    const val1 = obj1[key];
+                    const val2 = obj2[key];
+
+                    if (val1 == null && val2 == null) return true;
+                    if (val1 == null || val2 == null) return false;
+
+                    return String(val1) === String(val2);
+                });
+            },
+            checkDefaultStates() {
+                this.hasDefaultMainConfig = this.isObjectEqual(
+                    this.pendingSettings, 
+                    this.defaultMainConfig, 
+                    Object.keys(this.defaultMainConfig)
+                );
+                
+                this.hasDefaultPreferences = this.isObjectEqual(
+                    this.pendingSettings, 
+                    this.defaultPreferences, 
+                    Object.keys(this.defaultPreferences)
+                );
+            },
+            restoreDefaultConfigurations(){
+                Object.keys(this.defaultMainConfig).forEach(key => {
+                    this.pendingSettings[key] = this.defaultMainConfig[key];
+                });
+
+                this.saveAllSettings();
+            },
+            restoreDefaultPreferences(){
+                Object.keys(this.defaultPreferences).forEach(key => {
+                    this.pendingSettings[key] = this.defaultPreferences[key];
+                });
+                
+                this.saveAllSettings();
             },
             handleBeforeUnload(e) {
                 if (this.hasUnsavedChanges) {
@@ -538,14 +613,10 @@
                             localStorage.removeItem(key)
                         break
                     case "envName":
-                        if (this.pendingSettings[key] !== this.miscStore.configs?.environment?.name) {
-                            this.layoutStore.setEnvName(this.pendingSettings[key]);
-                        }
+                        this.layoutStore.setEnvName(this.pendingSettings[key]);
                         break
                     case "envColor":
-                        if (this.pendingSettings[key] !== this.miscStore.configs?.environment?.color) {
-                            this.layoutStore.setEnvColor(this.pendingSettings[key]);
-                        }
+                        this.layoutStore.setEnvColor(this.pendingSettings[key]);
                         break
                     case "theme":
                         Utils.switchTheme(this.$store, this.pendingSettings[key]);
@@ -584,7 +655,7 @@
 
                 this.originalSettings = JSON.parse(JSON.stringify(this.pendingSettings));
                 this.hasUnsavedChanges = false;
-
+                this.checkDefaultStates();
                 if(refreshWhenSaved){
                     document.location.assign(document.location.href)
                 }
