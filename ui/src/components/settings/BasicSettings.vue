@@ -663,10 +663,14 @@
                             localStorage.removeItem(key)
                         break
                     case "envName":
-                        this.layoutStore.setEnvName(this.pendingSettings[key]);
+                        if (this.pendingSettings[key] !== this.miscStore.configs?.environment?.name) {
+                            this.layoutStore.setEnvName(this.pendingSettings[key]);
+                        }
                         break
                     case "envColor":
-                        this.layoutStore.setEnvColor(this.pendingSettings[key]);
+                        if (this.pendingSettings[key] !== this.miscStore.configs?.environment?.color) {
+                            this.layoutStore.setEnvColor(this.pendingSettings[key]);
+                        }
                         break
                     case "theme":
                         Utils.switchTheme(this.miscStore, this.pendingSettings[key]);
