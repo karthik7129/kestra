@@ -14,9 +14,7 @@
                     :content="$t('settings.blocks.configuration.reset_to_defaults')" 
                     placement="top"
                 >
-                    <el-button @click="restoreDefaultConfigurations" :disabled="hasDefaultMainConfig" size="small" circle class="reset-button" type="primary">
-                        <img :src="reloadIcon" class="reset-icon">
-                    </el-button>
+                    <el-button :icon="Reload" @click="restoreDefaultConfigurations" :disabled="hasDefaultMainConfig" size="small" circle type="primary" />
                 </el-tooltip>
             </template>
             <template #content>
@@ -120,9 +118,7 @@
                     :content="$t('settings.blocks.theme.reset_to_defaults')" 
                     placement="top"
                 >
-                    <el-button @click="restoreDefaultPreferences" :disabled="hasDefaultPreferences" size="small" circle class="reset-button" type="primary">
-                        <img :src="reloadIcon" class="reset-icon">
-                    </el-button>
+                    <el-button :icon="Reload" @click="restoreDefaultPreferences" :disabled="hasDefaultPreferences" size="small" circle type="primary" />
                 </el-tooltip>
             </template>
             <template #content>
@@ -220,9 +216,7 @@
                     :content="$t('settings.blocks.localization.reset_to_defaults')" 
                     placement="top"
                 >
-                    <el-button @click="restoreDefaultLocalization" :disabled="hasDefaultLocalization" size="small" circle class="reset-button" type="primary">
-                        <img :src="reloadIcon" class="reset-icon">
-                    </el-button>
+                    <el-button :icon="Reload" @click="restoreDefaultLocalization" :disabled="hasDefaultLocalization" size="small" circle type="primary" />
                 </el-tooltip>
             </template>
             <template #content>
@@ -283,8 +277,8 @@
 </template>
 
 <script setup>
+    import Reload from "vue-material-design-icons/Reload.vue";
     import Download from "vue-material-design-icons/Download.vue";
-    import reloadIcon from "../../assets/reload.svg";
     import {executeFlowBehaviours} from "../../utils/constants";
 </script>
 
@@ -335,7 +329,6 @@
                 hasDefaultMainConfig: undefined,
                 hasDefaultPreferences: undefined,
                 hasDefaultLocalization: undefined,
-                reloadIcon: reloadIcon,   
                 defaultMainConfig: {
                     defaultNamespace: undefined,
                     defaultLogLevel: "INFO",
@@ -916,13 +909,6 @@
 
         .el-input__count-inner {
             background: none !important;
-        }
-    }
-   .reset-button {
-        .reset-icon {
-            width: 14px;
-            height: 14px;
-            filter: var(--ks-icon-filter);
         }
     }
 </style>
