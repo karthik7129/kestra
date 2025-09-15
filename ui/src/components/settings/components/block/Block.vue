@@ -1,15 +1,21 @@
 <template>
     <section>
         <h1 class="heading">
-            <div class="heading-content">
-                <el-popover v-if="note" :content="note" trigger="hover" :width="400" class="info">
+            <div class="content">
+                <el-popover
+                    v-if="note"
+                    :content="note"
+                    trigger="hover"
+                    :width="400"
+                    class="info"
+                >
                     <template #reference>
                         <InformationOutline />
                     </template>
                 </el-popover>
                 <span>{{ heading }}</span>
             </div>
-            <div class="heading-actions">
+            <div class="actions">
                 <slot name="actions" />
             </div>
         </h1>
@@ -41,22 +47,22 @@ section {
         justify-content: space-between;
         font-size: calc($font-size-base * 1.5);
         font-weight: 600;
-        
-        .heading-content {
-                display: flex;
-                align-items: center;
 
-                & > span.el-tooltip__trigger {
-                    cursor: pointer;
-                    margin-right: calc($spacer / 2);
-                }
-        }
+        & .content {
+            display: flex;
+            align-items: center;
 
-            .heading-actions {
-                display: flex;
-                align-items: center;
-                gap: calc($spacer / 2);
+            & > span.el-tooltip__trigger {
+                cursor: pointer;
+                margin-right: calc($spacer / 2);
             }
         }
+
+        & .actions {
+            display: flex;
+            align-items: center;
+            gap: calc($spacer / 2);
+        }
+    }
 }
 </style>
