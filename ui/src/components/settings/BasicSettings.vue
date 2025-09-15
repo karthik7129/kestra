@@ -11,7 +11,7 @@
         <Block :heading="$t('settings.blocks.configuration.label')">
             <template #actions>
                 <el-tooltip 
-                    :content="$t('settings.blocks.configuration.reset_to_defaults')" 
+                    :content="$t('settings.blocks.reset_section_to_defaults')" 
                     placement="top"
                 >
                     <el-button :icon="Reload" @click="restoreDefaultConfigurations" :disabled="hasDefaultMainConfig" size="small" circle type="primary" />
@@ -115,7 +115,7 @@
         <Block :heading="$t('settings.blocks.theme.label')">
             <template #actions>
                 <el-tooltip 
-                    :content="$t('settings.blocks.theme.reset_to_defaults')" 
+                    :content="$t('settings.blocks.reset_section_to_defaults')" 
                     placement="top"
                 >
                     <el-button :icon="Reload" @click="restoreDefaultPreferences" :disabled="hasDefaultPreferences" size="small" circle type="primary" />
@@ -213,7 +213,7 @@
         <Block :heading="$t('settings.blocks.localization.label')" :note="$t('settings.blocks.localization.note')">
             <template #actions>
                 <el-tooltip 
-                    :content="$t('settings.blocks.localization.reset_to_defaults')" 
+                    :content="$t('settings.blocks.reset_section_to_defaults')" 
                     placement="top"
                 >
                     <el-button :icon="Reload" @click="restoreDefaultLocalization" :disabled="hasDefaultLocalization" size="small" circle type="primary" />
