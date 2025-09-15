@@ -9,6 +9,16 @@
 
     <Wrapper>
         <Block :heading="$t('settings.blocks.configuration.label')">
+            <template #actions>
+                <el-tooltip 
+                    :content="$t('settings.blocks.configuration.reset_to_defaults')" 
+                    placement="top"
+                >
+                    <el-button @click="restoreDefaultConfigurations" :disabled="hasDefaultMainConfig" size="small" circle class="reset-button" type="primary">
+                        <img :src="reloadIcon" class="reset-icon">
+                    </el-button>
+                </el-tooltip>
+            </template>
             <template #content>
                 <Row>
                     <Column v-if="allowDefaultNamespace" :label="$t('settings.blocks.configuration.fields.default_namespace')">
@@ -100,16 +110,21 @@
                             </template>
                         </el-input-number>
                     </Column>
-                    <Column :label="$t('settings.blocks.configuration.fields.reset_to_defaults')">
-                        <el-button @click="restoreDefaultConfigurations()" type="primary" :disabled="hasDefaultMainConfig">
-                            {{ $t("settings.blocks.configuration.fields.reset") }}
-                        </el-button>
-                    </Column>
                 </Row>
             </template>
         </Block>
 
         <Block :heading="$t('settings.blocks.theme.label')">
+            <template #actions>
+                <el-tooltip 
+                    :content="$t('settings.blocks.theme.reset_to_defaults')" 
+                    placement="top"
+                >
+                    <el-button @click="restoreDefaultPreferences" :disabled="hasDefaultPreferences" size="small" circle class="reset-button" type="primary">
+                        <img :src="reloadIcon" class="reset-icon">
+                    </el-button>
+                </el-tooltip>
+            </template>
             <template #content>
                 <Row>
                     <Column :label="$t('settings.blocks.theme.fields.theme')">
@@ -195,17 +210,21 @@
                             showAlpha
                         />
                     </Column>
-
-                    <Column :label="$t('settings.blocks.theme.fields.reset_to_defaults')">
-                        <el-button @click="restoreDefaultPreferences()" type="primary" :disabled="hasDefaultPreferences">
-                            {{ $t("settings.blocks.theme.fields.reset") }}
-                        </el-button>
-                    </Column>
                 </Row>
             </template>
         </Block>
 
         <Block :heading="$t('settings.blocks.localization.label')" :note="$t('settings.blocks.localization.note')">
+            <template #actions>
+                <el-tooltip 
+                    :content="$t('settings.blocks.localization.reset_to_defaults')" 
+                    placement="top"
+                >
+                    <el-button @click="restoreDefaultLocalization" :disabled="hasDefaultLocalization" size="small" circle class="reset-button" type="primary">
+                        <img :src="reloadIcon" class="reset-icon">
+                    </el-button>
+                </el-tooltip>
+            </template>
             <template #content>
                 <Row>
                     <Column :label="$t('settings.blocks.configuration.fields.language')">
@@ -265,6 +284,7 @@
 
 <script setup>
     import Download from "vue-material-design-icons/Download.vue";
+    import reloadIcon from "../../assets/reload.svg";
     import {executeFlowBehaviours} from "../../utils/constants";
 </script>
 
@@ -298,7 +318,6 @@
             NamespaceSelect,
             LogLevelSelector,
             TopNavBar,
-
             Wrapper,
             Block,
             Row,
@@ -315,6 +334,8 @@
                 hasUnsavedChanges: false,
                 hasDefaultMainConfig: undefined,
                 hasDefaultPreferences: undefined,
+                hasDefaultLocalization: undefined,
+                reloadIcon: reloadIcon,   
                 defaultMainConfig: {
                     defaultNamespace: undefined,
                     defaultLogLevel: "INFO",
@@ -335,6 +356,11 @@
                     hoverTextEditor: false,
                     envName: undefined,
                     envColor: undefined
+                },
+                defaultLocalization:{
+                    lang: "en",
+                    timezone: this.$moment.tz.guess(),
+                    dateFormat: "llll"
                 },
                 originalSettings: {},
                 pendingSettings: {
@@ -455,12 +481,25 @@
                     this.defaultPreferences, 
                     Object.keys(this.defaultPreferences)
                 );
+
+                this.hasDefaultLocalization=this.isObjectEqual(
+                    this.pendingSettings,
+                    this.defaultLocalization,
+                    Object.keys(this.defaultLocalization)
+                );
+            },
+            restoreDefaultLocalization(){
+                Object.keys(this.defaultLocalization).forEach(key => {
+                    this.pendingSettings[key] = this.defaultLocalization[key];
+                });
+                
+                this.saveAllSettings();
             },
             restoreDefaultConfigurations(){
                 Object.keys(this.defaultMainConfig).forEach(key => {
                     this.pendingSettings[key] = this.defaultMainConfig[key];
                 });
-
+                
                 this.saveAllSettings();
             },
             restoreDefaultPreferences(){
@@ -877,6 +916,13 @@
 
         .el-input__count-inner {
             background: none !important;
+        }
+    }
+   .reset-button {
+        .reset-icon {
+            width: 14px;
+            height: 14px;
+            filter: var(--ks-icon-filter);
         }
     }
 </style>

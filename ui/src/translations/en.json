@@ -772,6 +772,7 @@
       "blocks": {
         "configuration": {
           "label": "Main Configuration",
+          "reset_to_defaults": "Restore Default Configuration",
           "fields": {
             "language": "Language",
             "default_namespace": "Default Namespace",
@@ -782,14 +783,13 @@
             "execute_default_tab": "Default Execution Tab",
             "multi_panel_editor": "Multi Panel Editor",
             "flow_default_tab": "Default Flow Tab",
-            "reset_to_defaults": "Restore Default Configuration",
-            "reset": "Reset",
             "playground": "Playground",
             "auto_refresh_interval": "Auto Refresh Interval"
           }
         },
         "theme": {
           "label": "Theme Preferences",
+          "reset_to_defaults": "Restore Default Preferences",
           "fields": {
             "theme": "Theme",
             "editor_font_size": "Editor Font Size",
@@ -800,8 +800,6 @@
             "environment_name": "Environment Name",
             "environment_name_tooltip": "This environment name is set from the config but can be changed.",
             "environment_color": "Environment Color",
-            "reset_to_defaults": "Restore Default Preferences",
-            "reset": "Reset",
             "chart_color_scheme": {
               "label": "Chart Color Scheme",
               "classic": "Classic",
@@ -811,6 +809,7 @@
         },
         "localization": {
           "label": "Language and Region",
+          "reset_to_defaults": "Restore Default Localization",
           "note": "Note that this setting is used for displaying date and time properties in the UI. To schedule your flows in a timezone different than UTC, make sure to set the timezone property on the Schedule trigger in your flow code or your plugin defaults.",
           "fields": {
             "time_zone": "Time Zone",
