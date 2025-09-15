@@ -14,7 +14,13 @@
                     :content="$t('settings.blocks.reset_section_to_defaults')" 
                     placement="top"
                 >
-                    <el-button :icon="Reload" @click="restoreDefaultConfigurations" :disabled="hasDefaultMainConfig" size="small" circle type="primary" />
+                    <el-button
+                        v-if="!hasDefaultMainConfig"
+                        type="secondary"
+                        :icon="Reload"
+                        circle
+                        @click="restoreDefaultConfigurations"
+                    />
                 </el-tooltip>
             </template>
             <template #content>
@@ -118,7 +124,13 @@
                     :content="$t('settings.blocks.reset_section_to_defaults')" 
                     placement="top"
                 >
-                    <el-button :icon="Reload" @click="restoreDefaultPreferences" :disabled="hasDefaultPreferences" size="small" circle type="primary" />
+                    <el-button
+                        v-if="!hasDefaultPreferences"
+                        type="secondary"
+                        :icon="Reload"
+                        circle
+                        @click="restoreDefaultPreferences"
+                    />
                 </el-tooltip>
             </template>
             <template #content>
@@ -216,7 +228,13 @@
                     :content="$t('settings.blocks.reset_section_to_defaults')" 
                     placement="top"
                 >
-                    <el-button :icon="Reload" @click="restoreDefaultLocalization" :disabled="hasDefaultLocalization" size="small" circle type="primary" />
+                    <el-button
+                        v-if="!hasDefaultLocalization"
+                        type="secondary"
+                        :icon="Reload"
+                        circle
+                        @click="restoreDefaultLocalization"
+                    />
                 </el-tooltip>
             </template>
             <template #content>
